@@ -1,8 +1,8 @@
 % Computer Vision Programming Assignment 2
 % 20175003 Sunghyun Kang
-% Problem 2, Estimate matrix E with RANSAC,
+% Step 2, Estimate matrix E with RANSAC,
 % Also, decompose essntial matrix E to camera extrinsic
-% You have to run problem_1.m first before running problem 2.
+% You have to run step_1.m first before running step 2.
 
 % add path
 addpath('Camera_Visualization');

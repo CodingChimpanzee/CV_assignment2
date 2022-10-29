@@ -55,8 +55,6 @@ for iter = 1:iter_c
         % Store the result in E_candidates if its inliers are more
         if E_candidates(4,2) < inliers
             E_candidates = [E; scores_E inliers 0];
-            disp(scores_E)
-            disp(inliers)
         end
     end
 
@@ -67,6 +65,6 @@ end
 close(f)
 % output: The most optimal matrix E
 E_matrix = E_candidates(1:3, 1:3);
-
+disp(E_candidates(4,2))
 end
 

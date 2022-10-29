@@ -1,6 +1,6 @@
 % Computer Vision Programming Assignment 2
 % 20175003 Sunghyun Kang
-% Problem 1, import image and Extract features using SIFT
+% Step 1, import image and Extract features using SIFT
 % Also, match features between two images
 
 % Add path

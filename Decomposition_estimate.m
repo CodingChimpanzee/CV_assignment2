@@ -1,7 +1,9 @@
-function [outputArg1,outputArg2] = Decomposition_estimate(inputArg1,inputArg2)
-%DECOMPOSITION_ESTIMATE 이 함수의 요약 설명 위치
-%   자세한 설명 위치
-outputArg1 = inputArg1;
-outputArg2 = inputArg2;
+function true_false = Decomposition_estimate(P)
+% estimation function that used in step 3
+% If this value turns out positive, then the camera matrix P
+% would be the real camera matrix
+
+true_false = false;
+
 end
 
