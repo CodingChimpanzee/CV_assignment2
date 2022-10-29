@@ -3,6 +3,11 @@
 % Problem 1, import image and Extract features using SIFT
 % Also, match features between two images
 
+% Add path
+addpath('Camera_Visualization');
+addpath('Data');
+addpath('vlfeat-0.9.21-my');
+
 %% Import image 3 and 4 
 % (turn into grayscale and extract as single type)
 I_3 = imread('sfm03.jpg');
@@ -24,5 +29,7 @@ hold off;
 
 %% Match features between two images
 [matches, scores] = vl_ubcmatch(D3, D4);
-[revmatches, revscores] = vl_ubcmatch(D4, D3);
 
+%% Normalize coordinates inside F3, F4
+norm_F3 = matrix_normalize(F3);
+norm_F4 = matrix_normalize(F4);

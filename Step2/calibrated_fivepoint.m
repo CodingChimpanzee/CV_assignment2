@@ -43,8 +43,12 @@ function Evec = calibrated_fivepoint( Q1,Q2)
 %
 %
 % Code to veryfy that it works: 
-% Q1 = rand(3,5);
-% Q2 = rand(3,5);
+% Q1 = [ x1  x2  x3  x4  x5 ;
+%        y1  y2  y3  y4  y5 ;
+%         1   1   1   1   1];
+% Q2 = [ x1' x2' x3' x4' x5';
+%        y1' y2' y3' y4' y5';
+%         1   1   1   1   1];
 % Evec   = calibrated_fivepoint( Q1,Q2);
 % for i=1:size(Evec,2)
 %   E = reshape(Evec(:,i),3,3);

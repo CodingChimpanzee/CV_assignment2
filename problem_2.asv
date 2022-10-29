@@ -1,0 +1,76 @@
+% Computer Vision Programming Assignment 2
+% 20175003 Sunghyun Kang
+% Problem 2, Estimate matrix E with RANSAC,
+% Also, decompose essntial matrix E to camera extrinsic
+
+% add path
+addpath('Camera_Visualization');
+addpath('Data');
+addpath('vlfeat-0.9.21-my');
+addpath('Step2');
+
+%% Extract 5 best matches
+% extract matches based on scores
+best_five_scores = maxk(scores, 5);
+
+% five indexes
+idx1 = find(scores == best_five_scores(1:1));
+idx2 = find(scores == best_five_scores(2:2));
+idx3 = find(scores == best_five_scores(3:3));
+idx4 = find(scores == best_five_scores(4:4));
+idx5 = find(scores == best_five_scores(5:5));
+
+% extract coordinates from index
+right_1 = [norm_F3(1, idx1); norm_F3(2, idx1); 1];
+right_2 = [norm_F3(1, idx2); norm_F3(2, idx2); 1];
+right_3 = [norm_F3(1, idx3); norm_F3(2, idx3); 1];
+right_4 = [norm_F3(1, idx4); norm_F3(2, idx4); 1];
+right_5 = [norm_F3(1, idx5); norm_F3(2, idx5); 1];
+
+left_1 = [norm_F4(1, idx1); norm_F4(2, idx1); 1];
+left_2 = [norm_F4(1, idx2); norm_F4(2, idx2); 1];
+left_3 = [norm_F4(1, idx3); norm_F4(2, idx3); 1];
+left_4 = [norm_F4(1, idx4); norm_F4(2, idx4); 1];
+left_5 = [norm_F4(1, idx5); norm_F4(2, idx5); 1];
+
+% Make Q1, Q2 matrix for Essential Matrix Estimation
+right_5points = [right_1 right_2 right_3 right_4 right_5];
+left_5points = [left_1 left_2 left_3 left_4 left_5];
+
+%% Essential matrix E estimation
+E = calibrated_fivepoint(right_5points, left_5points);
+
+%% Using RANSAC, estimate the performance of E
+
+
+%% Get the best matrix E
+% iteration time: 2000
+% First, initialize the matrix we want to store the E
+E_candidates = [];
+
+for iter = 1:100
+    indexes = randi([1 length(matches)], 5);
+    right_5points = [];
+    left_5points = [];
+    for i = 1:5
+        right_5points = [right_5points [norm_F3(1, indexes(i)); norm_F3(2, indexes(i)); 1]];
+        left_5points = [left_5points [norm_F4(1, indexes(i)); norm_F4(2, indexes(i)); 1]];
+    end
+    
+    % Get metadata E
+    E_prime = calibrated_fivepoint(right_5points, left_5points);
+    % E can be 9 by 2 or 9 by 4 or 9 by 6, ... so we will have
+    % multiple 3 by 3 matrices
+    for i = 1:length(E_prime(1, :))
+        E = reshape(E_prime(:,i), 3, 3);
+        scores_E = 0;
+        % Get x' * E * x for all matching points
+        for k = 1:length(matches(1,:))
+            x = [matches(1:i); matches(2:i); 1];
+            scores_right = scores_right + (x.' * E * x);
+        end
+    % Store the result in E_candidates
+    if E_candidates
+    end
+
+end
