@@ -1,0 +1,14 @@
+% Computer Vision Programming Assignment 2
+% 20175003 Sunghyun Kang
+% Step 4, Triangulation
+% You have to run step_3.m before running this code
+
+% add path
+addpath('Camera_Visualization');
+addpath('Data');
+addpath('vlfeat-0.9.21-my');
+
+%% Get 3D points from Camera pose & correspondences
+% Retrieve all the camera matrix candidates
+
+[P, tri] = Triangulation(P_1)

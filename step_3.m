@@ -7,7 +7,6 @@
 addpath('Camera_Visualization');
 addpath('Data');
 addpath('vlfeat-0.9.21-my');
-addpath('Step5');
 
 %% Essential matrix decomposition to [R|T]
 % From the previous essential matrix E, 
@@ -16,24 +15,14 @@ addpath('Step5');
 % Get U, W, V, and u_3
 W = [0 -1 0; 1 0 0; 0 0 1];
 Z = [0 1 0; -1 0 0; 0 0 0];
-[U, S, V] = svd(E);
+[U, S, V_t] = svd(E);
 u_3 = U * [0;0;1];
 
-% Get four candidates for camera matrix
-P_1 = [(U*W*transpose(V)) u_3];
-P_2 = [(U*W*transpose(V)) -u_3];
-P_3 = [U*transpose(W)*transpose(V) u_3];
-P_4 = [U*transpose(W)*transpose(V) u_4];
+% Transpose of V, W
+W_t = transpose(W);
 
-% Now evaluate those matrix to get real P
-if Decomposition_estimate(P_1)
-    P = P_1;
-elseif Decomposition_estimate(P_2)
-    P = P_2;
-elseif Decomposition_estimate(P_3)
-    P = P_3;
-elseif Decomposition_estimate(P_4)
-    P = P_4;
-else
-    error("There is no candidate for camera matrix!");
-end
+% Get four candidates for camera matrix
+P_1 = [(U*W*V_t) u_3];
+P_2 = [(U*W*V_t) -u_3];
+P_3 = [(U*W_t*V_t) u_3];
+P_4 = [(U*W_t*V_t) -u_3];

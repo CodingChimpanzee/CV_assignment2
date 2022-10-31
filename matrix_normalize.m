@@ -3,14 +3,25 @@ function result = matrix_normalize(matrix)
 % From range 0 ~ 1
 
 result = [];
-mother_x = max(matrix(1, :));
-doughter_x = min(matrix(1, :));
-mother_y = max(matrix(2, :));
-doughter_y = min(matrix(2, :));
+% mother_x = max(matrix(1, :));
+% doughter_x = min(matrix(1, :));
+% mother_y = max(matrix(2, :));
+% doughter_y = min(matrix(2, :));
+% for i = 1:length(matrix(1,:))
+%     x_cord = matrix(1, i);
+%     y_cord = matrix(2, i);
+%     temp = [(x_cord-doughter_x)/mother_x; (y_cord-doughter_y)/mother_y];
+%     result = [result temp];
+% end
+
+K = [ 3451.5      0.0  2312;
+       0.0 3451.5  1734;
+       0.0      0.0    1.0];
+
 for i = 1:length(matrix(1,:))
     x_cord = matrix(1, i);
     y_cord = matrix(2, i);
-    temp = [(x_cord-doughter_x)/mother_x; (y_cord-doughter_y)/mother_y];
+    temp = inv(K) * [x_cord; y_cord; 1];
     result = [result temp];
 end
 

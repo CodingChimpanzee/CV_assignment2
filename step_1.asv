@@ -36,23 +36,15 @@ norm_F4 = matrix_normalize(F4);
 
 %% Appendix: Find the best match of the image
 
-matrix_ij = [];
+matrix_ij = [0; 0; 0];
 counter = 0;
 % For progress bar
 f = waitbar(0, 'iteration start!');
 
 for i = 0:14
-    for j = (i+1):14
-        if i < 10
-            str1 = strcat('sfm0', int2str(i), '.jpg');
-        else
-            str1 = strcat('sfm', int2str(i), '.jpg');
-        end
-        if j < 10
-            str2 = strcat('sfm0', int2str(j), '.jpg');
-        else
-            str2 = strcat('sfm', int2str(j), '.jpg');
-        end
+    for j = (i+:14
+        str1 = strcat('sfm0', int2str(i), '.jpg');
+        str2 = strcat('sfm0', int2str(j), '.jpg');
         Image_i = imread(str1);
         Image_j = imread(str2);
         i_i = single(rgb2gray(Image_i));
@@ -62,14 +54,12 @@ for i = 0:14
         [F_j, D_j] = vl_sift(i_j);
         
         [match_ij, score_ij] = vl_ubcmatch(D_i, D_j);
-        matrix_ij = [matrix_ij [i; j; length(match_ij(1, :))]];
-
-%        if matrix_ij(3, 1) < length(match_ij(1, :))
-%            matrix_ij = [i; j; length(match_ij(1, :))];
-%        end
+        if matrix_ij(3, 1) < length(match_ij(1, :))
+            matrix_ij = [i; j; length(match_ij(1, :))];
+        end
         counter = counter + 1;
-        % Progress bar, 105 = 15 Combination 2
-        waitbar(counter/105, f, sprintf('Progress: %d %%', floor(counter/105*100)));
+        % Progress bar
+        waitbar(counter/90, f, sprintf('Progress: %d %%', floor(counter/90*100)));
     end
 end
 close(f)
