@@ -40,8 +40,10 @@ for i = 1:length(E_prime(1,:))
     scores_E = 0;
     % Get x' * E * x for all matching points
     for k = 1:length(matches(1,:))
-        x_trans = [F_a(1,i), F_a(2,i), 1];
-        x = [F_b(1,i); F_b(2,i); 1];
+        idx_a = matches(1, k);
+        idx_b = matches(2, k);
+        x_trans = [F_b(1,idx_b), F_b(2,idx_b), 1];
+        x = [F_a(1,idx_a); F_a(2,idx_a); 1];
         scores_E = scores_E + (x_trans * E * x);
     end
 scores_E = abs(scores_E / length(matches(1,:)));

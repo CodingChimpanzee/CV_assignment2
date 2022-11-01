@@ -8,34 +8,45 @@ addpath('Camera_Visualization');
 addpath('Data');
 addpath('vlfeat-0.9.21-my');
 
-%% Import image 3 and 4 
+%% Import image 9 and 10
+% Or kirby02 and kirby03
 % (turn into grayscale and extract as single type)
-I_3 = imread('sfm03.jpg');
-I_4 = imread('sfm04.jpg');
+I_a = imread('sfm03.jpg');
+I_b = imread('sfm04.jpg');
 
-i_3 = single(rgb2gray(I_3));
-i_4 = single(rgb2gray(I_4));
+i_a = single(rgb2gray(I_a));
+i_b = single(rgb2gray(I_b));
 
 %% Extract features using SIFT
-[F3, D3] = vl_sift(i_3);
-[F4, D4] = vl_sift(i_4);
+[Fa, Da] = vl_sift(i_a);
+[Fb, Db] = vl_sift(i_b);
 
 % Visualize the feature extraction result
-imshow(I_3);
+imshow(I_a);
 hold on;
-f3 = vl_plotframe(F3);
-set(f3, 'color', 'k', 'linewidth', 0.001);
+fa = vl_plotframe(Fa);
+set(fa, 'color', 'k', 'linewidth', 0.001);
 hold off;
 
 %% Match features between two images
-[matches, scores] = vl_ubcmatch(D3, D4);
+[matches, scores] = vl_ubcmatch(Da, Db);
 
 %% Normalize coordinates inside F3, F4
-norm_F3 = matrix_normalize(F3);
-norm_F4 = matrix_normalize(F4);
+
+% Original(SFM) image K
+K = [ 3451.5      0.0  2312;
+        0.0 3451.5  1734;
+        0.0      0.0    1.0];
+
+% My image K
+% K = [2846.555869842812172 0.0 2015.500000000000000;
+%     0.0 2935.255104226779622 1511.500000000000000;
+%     0.0 0.0 1.0];
+
+norm_Fa = matrix_normalize(Fa, K);
+norm_Fb = matrix_normalize(Fb, K);
 
 %% Appendix: Find the best match of the image
-
 matrix_ij = [];
 counter = 0;
 % For progress bar
@@ -64,9 +75,6 @@ for i = 0:14
         [match_ij, score_ij] = vl_ubcmatch(D_i, D_j);
         matrix_ij = [matrix_ij [i; j; length(match_ij(1, :))]];
 
-%        if matrix_ij(3, 1) < length(match_ij(1, :))
-%            matrix_ij = [i; j; length(match_ij(1, :))];
-%        end
         counter = counter + 1;
         % Progress bar, 105 = 15 Combination 2
         waitbar(counter/105, f, sprintf('Progress: %d %%', floor(counter/105*100)));

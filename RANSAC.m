@@ -1,4 +1,4 @@
-function E_matrix = RANSAC(F_a, F_b, matches)
+function [E_matrix, real_matches] = RANSAC(F_a, F_b, matches)
 % RANSAC FUNCTION that returns optimal E
 % F_a: normalized right side image coordinates
 % F_b: normalized left side image coordinates
@@ -15,12 +15,14 @@ E_candidates = [1 1 1; 1 1 1; 1 1 1; 1000 0 0];
 f = waitbar(0, 'iteration start!');
 
 % iteration time definition
-iter_c = 5000;
+iter_c = 3000;
 % Threshold definition
-threshold = 0.003;
+threshold = 0.02;
+% For the real matches
+real_matches = [];
 
-for iter = 1:iter_c
-    
+for iter = 1:iter_c    
+    temp_matches = [];
     % Achieve 5 random coordinates
     indexes = randi([1 length(matches)], 5);
     right_5points = [];
@@ -42,12 +44,15 @@ for iter = 1:iter_c
         % Get x' * E * x for all matching points
         % WARNING: DO NOT USE i AS AN coordinate index
         for k = 1:length(matches(1,:))
-            x_trans = [F_b(1,k), F_b(2,k), 1];
-            x = [F_a(1,k); F_a(2,k); 1];
+            idx_a = matches(1, k);
+            idx_b = matches(2, k);
+            x_trans = [F_b(1,idx_b), F_b(2,idx_b), 1];
+            x = [F_a(1,idx_a); F_a(2,idx_a); 1];
             temp = abs(x_trans * E * x);
             scores_E = scores_E + temp;
             if temp < threshold
                 inliers = inliers + 1;
+                temp_matches = [temp_matches matches(:, k)];
             end
         end
         scores_E = scores_E / length(matches(1,:));
@@ -55,6 +60,9 @@ for iter = 1:iter_c
         % Store the result in E_candidates if its inliers are more
         if E_candidates(4,2) < inliers
             E_candidates = [E; scores_E inliers 0];
+            real_matches = temp_matches;
+        else
+            temp_matches = [];
         end
     end
 
@@ -63,8 +71,8 @@ for iter = 1:iter_c
 end
 % end progress bar
 close(f)
-% output: The most optimal matrix E
-E_matrix = E_candidates(1:3, 1:3);
+% output: The most optimal matrix E and its matches
+E_matrix = E_candidates(1:3, 1:3); 
 disp(E_candidates(4,2))
 end
 

@@ -11,19 +11,31 @@ addpath('vlfeat-0.9.21-my');
 %% Get 3D points from Camera pose & correspondences
 % Retrieve all the camera matrix candidates
 
-[P_candidate_1, tri] = Triangulation(P_1, matches, norm_F3, norm_F4);
-[P_candidate_2, tri] = Triangulation(P_2, matches, norm_F3, norm_F4);
-[P_candidate_3, tri] = Triangulation(P_3, matches, norm_F3, norm_F4);
-[P_candidate_4, tri] = Triangulation(P_4, matches, norm_F3, norm_F4);
+[P_candidate_1, z_1, c_1] = Triangulation(P_1, E, real_matches, Fa, Fb);
+[P_candidate_2, z_2, c_2] = Triangulation(P_2, E, real_matches, Fa, Fb);
+[P_candidate_3, z_3, c_3] = Triangulation(P_3, E, real_matches, Fa, Fb);
+[P_candidate_4, z_4, c_4] = Triangulation(P_4, E, real_matches, Fa, Fb);
 
-if P_candidate_1
+c = max([c_1, c_2, c_3, c_4]);
+
+if c == c_1
     P = P_candidate_1;
-elseif P_candidate_2
+    z = z_1;
+elseif c == c_2
     P = P_candidate_2;
-elseif P_candidate_3
+    z = z_2;
+elseif c == c_3
     P = P_candidate_3;
-elseif P_candidate_4
+    z = z_3;
+elseif c == c_4
     P = P_candidate_4;
+    z = z_4;
 else
     error("NO CANDIDATES!");
 end
+
+Z = z(1:3, :);
+
+%% Final step, plot the result
+C = zeros(3, length(Z));
+write_ply("test.ply", Z, C);

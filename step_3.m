@@ -9,12 +9,11 @@ addpath('Data');
 addpath('vlfeat-0.9.21-my');
 
 %% Essential matrix decomposition to [R|T]
-% From the previous essential matrix E, 
+% From the previous essential matrix E,
 % we have to struct camera matrix P
 
 % Get U, W, V, and u_3
 W = [0 -1 0; 1 0 0; 0 0 1];
-Z = [0 1 0; -1 0 0; 0 0 0];
 [U, S, V_t] = svd(E);
 u_3 = U * [0;0;1];
 

@@ -1,38 +1,45 @@
-function [realP, result] = Triangulation(P, matches, norm_1, norm_2)
+function [realP, result, counter] = Triangulation(P, E, matches, Fa, Fb)
 % estimation function that used in step 3
 % If this value turns out positive, then the camera matrix P
 % would be the real camera matrix
 
+counter = 0;
 realP = [];
 result = [];
 
-p_1 = [1 0 0 0];
-p_2 = [0 1 0 0];
-p_3 = [0 0 1 0];
+% Image 1 camera matrix (default)
+p_img1 = [1 0 0 0; 0 1 0 0; 0 0 1 0];
+% Extrinsic matrix of it (Intrinsic matrix * camera matrix)
+p_img1 = E * p_img1;
+p_1 = p_img1(1, :);
+p_2 = p_img1(2, :);
+p_3 = p_img1(3, :);
 
-pp_1 = P(1, :);
-pp_2 = P(2, :);
-pp_3 = P(3, :);
+% Image 2 camera matrix (candidates)
+p_img2 = E * P;
+pp_1 = p_img2(1, :);
+pp_2 = p_img2(2, :);
+pp_3 = p_img2(3, :);
 
 for i = 1:length(matches(1, :))
-    idx = matches(1, i);
-    x = norm_1(1, idx);
-    y = norm_1(2, idx);
-    xp = norm_2(1, idx);
-    yp = norm_2(2, idx);
+    idx_a = matches(1, i);
+    idx_b = matches(2, i);
+    x = Fa(1, idx_a);
+    y = Fa(2, idx_a);
+    xp = Fb(1, idx_b);
+    yp = Fb(2, idx_b);
 
     A = [x*p_3 - p_1; y*p_3 - p_2; xp*pp_3 - pp_1; yp*pp_3 - pp_2];
     [~, ~, V] = svd(A);
-    
-    if V(4, 3) < 0
+
+    if V(3, 4)/V(4, 4) < 0
         realP = false;
-        result = false;
+    else
+        realP = P;
+        result = [result V(:, 4)./V(4, 4)];
+        counter = counter + 1;
     end
     
-end
-
-if realP ~= 0
-    realP = P;
 end
 
 end
