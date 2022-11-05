@@ -2,17 +2,22 @@
 Programming assignment 2 for computer vision course
 
 ## Dependencies
-* MATALB version: 2022a
+* MATALB version: at least 2015b
 * VLFeat: at least v.0.9.21
 
 ## Usage
 ```bash
-# add paths
-pip install numpy
-pip install opencv-python
-pip install tqdm
+# add paths inside matlab console
+addpath('Data')
+addpath('match_plot')
+addpath('Step2')
+addpath('Step5')
+addpath('Step7')
+addpath('vlfeat-0.9.21');
 
 # run codes using matlab
+# you have to run with this order
+cd Codes
 step1
 step2
 step3
@@ -20,21 +25,28 @@ step4
 ```
 
 ## Directories
-* Analysis: Stuffs to see hyperparameter tendencies
 * Codes: Source code for this project
-* Figures: Figures that used for the report
-* Images: Given image and project results.
+* external_source_code: External source code for visualizing
+* Data: Image data that used for the report
+* Results: Results from my code, please see "the_real_result" file
+* camera_calibration_results: My camera calibration results
 
 ## Components
-* Images
-    * HR.png: Groud-truth image
-    * upsampled.png: Image that is upsampled (blurry)
-    * problem1.png: Result image from problem1.py code
-    * problem2.png: Result image from problem2.py code
-    * additional.png: Result form additional image
-
 * Codes
-    * problem1.py: Solution for problem 1
-    * problem2.py: Solution for problem 2
-    * additional_method.py: My additional method implementation
-    * KERNEL.csv: Blur kernel matrix for additional method
+    * step_1.m: Imaging feature extraction and basic matching
+    * step_2.m: Running RANSAC to achieve essential matrix E and its reasonable matchings
+    * step_3.m: Receive 4 camera matricies candidate 
+    * step_4.m: Triangulation and the 3D coodinate estimation
+    * matrix_normalize: Feature vector normalization based on camera intrinsic K
+    * RANSAC.m: RANSAC function
+    * BEST_SCORES_RANSAC: RANSAC based on the best scores (not that meaningful)
+    * Triangulation.m: Triangulation function
+    * additional_tri.m: Triangulation in backwards (switching camera)
+    * color_reshape.m: Function that reconstructs the color of 3D mesh
+    * Plotting.m: Plotting a graph for my report
+
+
+* Images
+    * the_real_result.ply: The submission file for .ply
+
+
