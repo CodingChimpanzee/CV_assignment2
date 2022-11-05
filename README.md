@@ -2,7 +2,7 @@
 Programming assignment 2 for computer vision course
 
 ## Dependencies
-* MATALB version: at least 2015b
+* MATALB version: at least 2022a
 * VLFeat: at least v.0.9.21
 
 ## Usage
@@ -14,6 +14,7 @@ addpath('Step2')
 addpath('Step5')
 addpath('Step7')
 addpath('vlfeat-0.9.21');
+addpath('external_source_code');
 
 # run codes using matlab
 # you have to run with this order
@@ -48,5 +49,5 @@ step4
 
 * Images
     * the_real_result.ply: The submission file for .ply
-
+    * my_image_result.ply: Result from my own image
 

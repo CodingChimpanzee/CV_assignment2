@@ -17,4 +17,3 @@ addpath('Step5');
 % points from that set.
 
 [idx_1, idx_2, idx_3] = randi(length(real_matches), 3);
-p_1 = 

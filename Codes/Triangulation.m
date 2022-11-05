@@ -33,10 +33,10 @@ for i = 1:length(matches(1, :))
     xp = norm_Fb(1, idx_b);
     yp = norm_Fb(2, idx_b);
 
-    A = [x*pp_3 - pp_1; 
-        y*pp_3 - pp_2; 
-        xp*p_3 - p_1; 
-        yp*p_3 - p_2];
+    A = [x*p_3 - p_1; 
+        y*p_3 - p_2; 
+        xp*pp_3 - pp_1; 
+        yp*pp_3 - pp_2];
 
     %[~, ~, V] = svd(A.' * A);
     [~, ~, V] = svd(A);
