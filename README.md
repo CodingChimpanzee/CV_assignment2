@@ -9,6 +9,7 @@ Programming assignment 2 for computer vision course
 ```bash
 # add paths inside matlab console
 addpath('Data')
+addpath('Calibration_Data')
 addpath('match_plot')
 addpath('Step2')
 addpath('Step5')
@@ -28,7 +29,8 @@ step4
 ## Directories
 * Codes: Source code for this project
 * external_source_code: External source code for visualizing
-* Data: Image data that used for the report
+* Data: Image data that used for the report 
+* Calibration_Data: Calibration image and my own data to reproduce the 3D coordinates
 * Results: Results from my code, please see "the_real_result" file
 * camera_calibration_results: My camera calibration results
 
