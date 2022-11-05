@@ -5,7 +5,6 @@
 % You have to run step_1.m first before running step 2.
 
 % add path
-addpath('Camera_Visualization');
 addpath('Data');
 addpath('vlfeat-0.9.21-my');
 addpath('Step2');
@@ -23,7 +22,7 @@ E_best = BEST_SCORES_RANSAC(norm_Fa, norm_Fb, matches, scores);
 ia_coord = [];
 ib_coord = [];
 
-for i = randi(length(real_matches), 1000)
+for i = randi(length(real_matches), 100)
     idx_a = real_matches(1, i);
     idx_b = real_matches(2, i);
     ia_coord = [ia_coord; Fa(1, idx_a) Fa(2, idx_a)];

@@ -8,11 +8,11 @@ addpath('Camera_Visualization');
 addpath('Data');
 addpath('vlfeat-0.9.21-my');
 
-%% Import image 9 and 10
+%% Import image a and b
 % Or kirby02 and kirby03
 % (turn into grayscale and extract as single type)
-I_a = imread('sfm03.jpg');
-I_b = imread('sfm04.jpg');
+I_a = imread('kirby02.jpg');
+I_b = imread('kirby03.jpg');
 
 i_a = single(rgb2gray(I_a));
 i_b = single(rgb2gray(I_b));
@@ -21,7 +21,17 @@ i_b = single(rgb2gray(I_b));
 [Fa, Da] = vl_sift(i_a);
 [Fb, Db] = vl_sift(i_b);
 
-% Visualize the feature extraction result
+%% Check whether the x and y axis has been switched
+% If it is switched, please run this coordinate
+% temp = Fa(2, :);
+% Fa(2, :) = Fa(1, :);
+% Fa(1, :) = temp;
+% 
+% temp = Fb(2, :);
+% Fb(2, :) = Fb(1, :);
+% Fb(1, :) = temp;
+
+%% Visualize the feature extraction result
 imshow(I_a);
 hold on;
 fa = vl_plotframe(Fa);
@@ -31,7 +41,7 @@ hold off;
 %% Match features between two images
 [matches, scores] = vl_ubcmatch(Da, Db);
 
-%% Normalize coordinates inside F3, F4
+%% Normalize coordinates inside Fa, Fb
 
 % Original(SFM) image K
 K = [ 3451.5      0.0  2312;
@@ -39,9 +49,9 @@ K = [ 3451.5      0.0  2312;
         0.0      0.0    1.0];
 
 % My image K
-% K = [2846.555869842812172 0.0 2015.500000000000000;
-%     0.0 2935.255104226779622 1511.500000000000000;
-%     0.0 0.0 1.0];
+K = [2846.555869842812172 0.0 2015.500000000000000;
+    0.0 2935.255104226779622 1511.500000000000000;
+    0.0 0.0 1.0];
 
 norm_Fa = matrix_normalize(Fa, K);
 norm_Fb = matrix_normalize(Fb, K);
