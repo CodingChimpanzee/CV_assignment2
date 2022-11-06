@@ -1,4 +1,4 @@
-# CV_assignment2
+# CV_assignment2: Structure From Motion (SFM)
 Programming assignment 2 for computer vision course
 
 ## Dependencies
