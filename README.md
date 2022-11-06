@@ -1,5 +1,7 @@
-# CV_assignment2: Structure From Motion (SFM)
+# Computer Vision Assignment2: Structure From Motion (SFM)
 Programming assignment 2 for computer vision course
+- Structure from motion using SIFT, RANSAC and 5-point algorithm
+- Triangulation method
 
 ## Dependencies
 * MATALB version: at least 2022a
